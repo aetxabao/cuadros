@@ -1,0 +1,28 @@
+@startuml
+title Flujo de\n <b>cuadros</b>
+left to right direction
+skinparam packageStyle rect
+skinparam shadowing false
+
+actor pintor1 as p1
+actor pintor2 as p2
+actor pintor3 as p3
+actor marchante1 as m1
+actor marchante2 as m2
+
+note left of p1 : [1-60]  
+note left of p2 : [1-30]  
+note left of p3 : [7-15]    
+note right of m1 : [20-40]
+note right of m2 : [7]
+
+rectangle Expo {
+	(cuadros) as c
+
+	p1 --> c : Insert
+	p2 --> c : Insert
+	p3 --> c : Insert
+    c --> m1 : Remove
+    c --> m2 : Remove
+}
+@enduml

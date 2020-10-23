@@ -6,10 +6,10 @@ namespace cuadros
     {
         Reloj reloj;
         Expo expo;
-        Pintor pintor;
-        Marchante marchante;
+        Pintor[] pintores;
+        Marchante[] marchantes;
 
-        public void Run(int stock, int capacidad, int tp1, int tp2, int tm1, int tm2)
+        public void Run(int stock, int capacidad, int[] tp1, int[] tp2, int[] tm1, int[] tm2)
         {
             Console.WriteLine("Inicio");
             Init(stock, capacidad, tp1, tp2, tm1, tm2);
@@ -17,34 +17,60 @@ namespace cuadros
             Finish();
             Console.WriteLine("Metidos: {0} Sacados: {1} Stock: {2} ",
                                 expo.Metidos, expo.Sacados, expo.Stock);
-            Console.WriteLine("Tiempo pintor parado: {0}\nTiempo marchante parado: {1}",
+            Console.WriteLine("Tiempo pintores parados: {0}\nTiempo marchantes parados: {1}",
                                 expo.GetTiempoEsperaMeter(), expo.GetTiempoEsperaSacar());
         }
-        void Init(int stock, int capacidad, int tp1, int tp2, int tm1, int tm2)
+        void Init(int stock, int capacidad, int[] tp1, int[] tp2, int[] tm1, int[] tm2)
         {
             reloj = new Reloj();
             expo = new Expo(reloj, stock, capacidad);
-            pintor = new Pintor(reloj, expo, tp1, tp2);
-            marchante = new Marchante(reloj, expo, tm1, tm2);
+            int n = tp1.Length;
+            int m = tm1.Length;
+            pintores = new Pintor[n];
+            marchantes = new Marchante[m];
+            for (int i = 0; i < n; i++)
+            {
+                pintores[i] = new Pintor(reloj, expo, tp1[i], tp2[i]);
+            }
+            for (int i = 0; i < m; i++)
+            {
+                marchantes[i] = new Marchante(reloj, expo, tm1[i], tm2[i]);
+            }
         }
         void Start()
         {
             expo.Start();
-            pintor.Start();
-            marchante.Start();
+            for (int i = 0; i < pintores.Length; i++)
+            {
+                pintores[i].Start();
+            }
+            for (int i = 0; i < marchantes.Length; i++)
+            {
+                marchantes[i].Start();
+            }
         }
         void Finish()
         {
             expo.Finish();
-            pintor.Finish();
-            marchante.Finish();
+            for (int i = 0; i < pintores.Length; i++)
+            {
+                pintores[i].Finish();
+            }
+            for (int i = 0; i < marchantes.Length; i++)
+            {
+                marchantes[i].Finish();
+            }
         }
         static void Main(string[] args)
         {
             Program p = new Program();
-            p.Run(9, 10, 1, 60, 15, 15);
-            p.Run(9, 10, 1, 60, 30, 60);
-            p.Run(9, 10, 1, 60, 60, 60);
+            int stock = 6;
+            int capacidad = 10;
+            int[] tm1 = { 1, 1, 7 };
+            int[] tm2 = { 60, 30, 15 };
+            int[] tp1 = { 20, 7 };
+            int[] tp2 = { 40, 7 };
+            p.Run(stock, capacidad, tm1, tm2, tp1, tp2);
         }
 
     }
