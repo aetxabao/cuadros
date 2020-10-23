@@ -9,10 +9,13 @@ namespace cuadros
         Expo expo;
         Reloj reloj;
         Thread thread;
-        public Marchante(Reloj reloj, Expo expo)
+        int tm1, tm2;
+        public Marchante(Reloj reloj, Expo expo, int tm1, int tm2)
         {
             this.reloj = reloj;
             this.expo = expo;
+            this.tm1 = tm1;
+            this.tm2 = tm2;
         }
         public void Start()
         {
@@ -29,9 +32,20 @@ namespace cuadros
 
         void Agenda()
         {
+            Random rnd = new Random();
+            int i;
             while (!expo.IsClosed())
             {
-                expo.Remove();
+                i = rnd.Next(tm1, tm2 + 1);
+                if (reloj.GetMilliseconds() + i * Reloj.MSxD < 365 * Reloj.MSxD)
+                {
+                    Thread.Sleep(i * Reloj.MSxD);
+                    expo.Remove();
+                }
+                else
+                {
+                    return;
+                }
             }
         }
     }

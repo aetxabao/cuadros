@@ -8,11 +8,14 @@ namespace cuadros
         Expo expo;
         Reloj reloj;
         Thread thread;
+        int tp1, tp2;
 
-        public Pintor(Reloj reloj, Expo expo)
+        public Pintor(Reloj reloj, Expo expo, int tp1, int tp2)
         {
             this.reloj = reloj;
             this.expo = expo;
+            this.tp1 = tp1;
+            this.tp2 = tp2;
         }
         public void Start()
         {
@@ -31,9 +34,9 @@ namespace cuadros
         {
             Random rnd = new Random();
             int i;
-            while (true)
+            while (!expo.IsClosed())
             {
-                i = rnd.Next(1, 60);
+                i = rnd.Next(tp1, tp2+1);
                 if (reloj.GetMilliseconds() + i * Reloj.MSxD < 365 * Reloj.MSxD)
                 {
                     Thread.Sleep(i * Reloj.MSxD);
