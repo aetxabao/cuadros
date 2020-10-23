@@ -29,11 +29,12 @@ namespace cuadros
 
         void Agenda()
         {
-            Random rnd = new Random();
+            NormalDist normalDist = new NormalDist(30, 15);
             int i;
             while (true)
             {
-                i = rnd.Next(1, 60);
+                i = (int)normalDist.Next();
+                i = i < 0 ? 0 : i;
                 if (reloj.GetMilliseconds() + i * Reloj.MSxD < 365 * Reloj.MSxD)
                 {
                     Thread.Sleep(i * Reloj.MSxD);
